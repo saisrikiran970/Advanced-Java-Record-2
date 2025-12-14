@@ -668,3 +668,16 @@ body {
 .weeks-container::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #5f72ff, #8a5cff);
 }
+
+.app-subtitle {
+    margin: 4px 0;
+    font-weight: 500;
+    color: #555;
+}
+
+.app-subtitle:first-of-type {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+}
+
