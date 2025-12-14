@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 7 – Advanced Java Lab</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .week-content {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #1e88e5;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 25px;
+            color: #444;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+
+        pre {
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #1e88e5;
+        }
+
+        img {
+            width: 100%;
+            max-width: 750px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="week-content">
+
+    <h1>Week – 7</h1>
+
+    <div class="meta">
+        <p><strong>Roll No:</strong> 238W1A1290</p>
+        <p><strong>Experiment:</strong> Cookies using Java Servlets</p>
+    </div>
+
+    <div class="section">
+        <h2>AIM</h2>
+        <p>
+            To develop a Java Servlet program that demonstrates the concept of
+            cookies by creating, setting, reading, and clearing cookies to
+            maintain user-specific information across multiple requests.
+        </p>
+    </div>
+
+    <!-- Clear Cookie Servlet -->
+    <div class="section">
+        <h2>ClearCookieServlet</h2>
+        <pre>
+@WebServlet("/clear")
+public class ClearCookieServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        Cookie cookie = new Cookie("username", "");
+        cookie.setMaxAge(0);
+        cookie.setPath(request.getContextPath().isEmpty()
+                ? "/" : request.getContextPath());
+
+        response.addCookie(cookie);
+        response.sendRedirect(request.getContextPath() + "/");
+    }
+}
+        </pre>
+    </div>
+
+    <!-- Read Cookie Servlet -->
+    <div class="section">
+        <h2>ReadCookieServlet</h2>
+        <pre>
+@WebServlet("/read")
+public class ReadCookieServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if ("username".equals(c.getName())) {
+                    username = URLDecoder.decode(c.getValue(), "UTF-8");
+                    break;
+                }
+            }
+        }
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        if (username != null)
+            out.println("Found cookie! username = " + username);
+        else
+            out.println("No 'username' cookie found");
+    }
+}
+        </pre>
+    </div>
+
+    <!-- Set Cookie Servlet -->
+    <div class="section">
+        <h2>SetCookieServlet</h2>
+        <pre>
+@WebServlet("/set")
+public class SetCookieServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String user = request.getParameter("username");
+        if (user == null || user.trim().isEmpty())
+            user = "Guest";
+
+        String value = URLEncoder.encode(user, "UTF-8");
+        Cookie cookie = new Cookie("username", value);
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setHttpOnly(true);
+
+        response.addCookie(cookie);
+
+        PrintWriter out = response.getWriter();
+        out.println("Cookie created for user: " + user + ");
+        out.println("Read cookie");
+    }
+}
+        </pre>
+    </div>
+
+    <!-- index.html -->
+    <div class="section">
+        <h2>index.html</h2>
+        <pre>
+&lt;form action="set" method="get"&gt;
+    Name: &lt;input name="username"&gt;
+    &lt;button type="submit"&gt;Set cookie&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;a href="read"&gt;Read cookie&lt;/a&gt;
+&lt;br&gt;
+&lt;a href="clear"&gt;Clear cookie&lt;/a&gt;
+        </pre>
+    </div>
+
+    <!-- Output -->
+    <div class="section">
+        <h2>Output</h2>
+
+        <img src="../images/image71.png" alt="Week 7 Output 1">
+        <img src="../images/image72.png" alt="Week 7 Output 2">
+        <img src="../images/image73.png" alt="Week 7 Output 3">
+    </div>
+
+</div>
+
+</body>
+</html>

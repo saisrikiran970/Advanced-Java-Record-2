@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 11 – Advanced Java Lab</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .week-content {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #1e88e5;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #444;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 8px 0;
+        }
+
+        pre {
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #1e88e5;
+        }
+
+        img {
+            width: 100%;
+            max-width: 750px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="week-content">
+
+    <h1>Week – 11</h1>
+
+    <div class="meta">
+        <p><strong>Roll No:</strong> 238W1A1290</p>
+        <p><strong>Topic:</strong> H2 Database & JDBC with MySQL using Spring Boot</p>
+    </div>
+
+    <!-- ================= PART 1 ================= -->
+    <div class="section">
+        <h2>Part 1: Using H2 Database</h2>
+        <p><strong>Project Name:</strong> h2db</p>
+
+        <h3>Author.java</h3>
+        <pre>
+public class Author {
+    private String firstName;
+    private String lastName;
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+}
+        </pre>
+
+        <h3>AuthorService.java</h3>
+        <pre>
+@Service
+public class AuthorService {
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @PostConstruct
+    public void postConstruct() {
+
+        jdbcTemplate.execute("DROP TABLE IF EXISTS author");
+        jdbcTemplate.execute(
+            "CREATE TABLE author(first_name VARCHAR(255), last_name VARCHAR(255))");
+
+        jdbcTemplate.update(
+            "INSERT INTO author(first_name, last_name) VALUES (?,?)",
+            "Manogna", "IT");
+
+        jdbcTemplate.update(
+            "INSERT INTO author(first_name, last_name) VALUES (?,?)",
+            "Varshini", "CSE");
+    }
+}
+        </pre>
+
+        <h3>application.properties (H2)</h3>
+        <pre>
+server.port=83
+spring.application.name=h2db
+
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+        </pre>
+    </div>
+
+    <!-- ================= PART 2 ================= -->
+    <div class="section">
+        <h2>Part 2: JDBC with MySQL</h2>
+
+        <h3>Employee.java</h3>
+        <pre>
+@Entity
+public class Employee {
+
+    @Id
+    private int id;
+    private String name;
+    private String department;
+}
+        </pre>
+
+        <h3>EmployeeRepository.java</h3>
+        <pre>
+public interface EmployeeRepository
+        extends JpaRepository<Employee, Integer> {
+}
+        </pre>
+
+        <h3>application.properties (MySQL)</h3>
+        <pre>
+server.port=85
+spring.datasource.url=jdbc:mysql://localhost:3306/employee_db
+spring.datasource.username=root
+spring.datasource.password=
+spring.jpa.show-sql=true
+        </pre>
+
+        <h3>Database Script</h3>
+        <pre>
+CREATE DATABASE employee_db;
+USE employee_db;
+
+CREATE TABLE employee (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    department VARCHAR(255)
+);
+        </pre>
+    </div>
+
+    <!-- ================= OUTPUT ================= -->
+    <div class="section">
+        <h2>Output</h2>
+        <img src="../images/image111.png" alt="H2 Database Output">
+        <img src="../images/image112.png" alt="MySQL JDBC Output">
+    </div>
+
+    <!-- ================= RESULT ================= -->
+    <div class="section">
+        <h2>Result</h2>
+        <p>
+            The H2 in-memory database and MySQL database were successfully
+            configured and accessed using Spring Boot. Data insertion and
+            retrieval operations were executed successfully.
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

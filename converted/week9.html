@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 9 – Advanced Java Lab</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .week-content {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #1e88e5;
+        }
+
+        h3 {
+            font-size: 17px;
+            margin-top: 20px;
+            color: #444;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 8px 0;
+        }
+
+        pre {
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #1e88e5;
+        }
+
+        .output-box {
+            background: #e8f5e9;
+            border-left: 6px solid #2e7d32;
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1b5e20;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="week-content">
+
+    <h1>Week – 9</h1>
+
+    <div class="meta">
+        <p><strong>Subject:</strong> Advanced Java Lab (23IT5351)</p>
+        <p><strong>Topic:</strong> REST API using Spring Boot</p>
+    </div>
+
+    <!-- AIM -->
+    <div class="section">
+        <h2>AIM</h2>
+        <p>
+            To develop a REST API using Spring Boot and test
+            GET and POST requests using Postman.
+        </p>
+    </div>
+
+    <!-- Procedure -->
+    <div class="section">
+        <h2>Procedure</h2>
+        <p>1. Create a Spring Boot project using Spring Initializr.</p>
+        <p>2. Add dependency: <strong>Spring Web</strong>.</p>
+        <p>3. Import the project into STS / IntelliJ IDE.</p>
+        <p>4. Create a REST controller and define GET and POST mappings.</p>
+        <p>5. Run the application (default port: <strong>8080</strong>).</p>
+    </div>
+
+    <!-- Source Code -->
+    <div class="section">
+        <h2>HelloController.java</h2>
+
+        <pre>
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello(@RequestParam String name) {
+        return "Hello, " + name + "!";
+    }
+
+    @PostMapping("/add")
+    public String addNumbers(@RequestBody Numbers num) {
+        int sum = num.a + num.b;
+        return "Sum of numbers: " + sum;
+    }
+}
+
+class Numbers {
+    public int a;
+    public int b;
+}
+        </pre>
+    </div>
+
+    <!-- Testing -->
+    <div class="section">
+        <h2>Testing REST APIs using Postman</h2>
+
+        <h3>GET API</h3>
+        <p><strong>URL:</strong> <code>http://localhost:8080/hello?name=Sai</code></p>
+
+        <div class="output-box">
+            Output: Hello, Sai!
+        </div>
+
+        <h3>POST API</h3>
+        <p><strong>URL:</strong> <code>http://localhost:8080/add</code></p>
+        <p><strong>Request Body (JSON):</strong></p>
+
+        <pre>
+{
+  "a": 10,
+  "b": 20
+}
+        </pre>
+
+        <div class="output-box">
+            Output: Sum of numbers: 30
+        </div>
+    </div>
+
+    <!-- Result -->
+    <div class="section">
+        <h2>Result</h2>
+        <p>
+            REST APIs using GET and POST methods were successfully
+            implemented and tested using Spring Boot and Postman.
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

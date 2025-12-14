@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 10 – Advanced Java Lab</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .week-content {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #1e88e5;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #444;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+
+        pre {
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #1e88e5;
+        }
+
+        img {
+            width: 100%;
+            max-width: 750px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="week-content">
+
+    <h1>Week – 10</h1>
+
+    <div class="meta">
+        <p><strong>Roll No:</strong> 238W1A1290</p>
+        <p><strong>Topic:</strong> CRUD Operations using JDBC Template & Spring Stereotype Annotations</p>
+    </div>
+
+    <!-- AIM -->
+    <div class="section">
+        <h2>AIM</h2>
+        <p>
+            To implement basic CRUD (Create, Read, Update, Delete) operations on a
+            MySQL database using JDBC in Java and Spring JDBC Template.
+            Also, to explore Spring stereotype annotations such as
+            <strong>@Component</strong>, <strong>@Service</strong>,
+            <strong>@Repository</strong>, and <strong>@Controller</strong>.
+        </p>
+    </div>
+
+    <!-- application.properties -->
+    <div class="section">
+        <h2>application.properties</h2>
+        <pre>
+spring.application.name=spring-crud-jdbc
+spring.datasource.url=jdbc:mysql://localhost:3306/studentdb
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.show-sql=true
+        </pre>
+    </div>
+
+    <!-- JdbcConfig -->
+    <div class="section">
+        <h2>JdbcConfig.java</h2>
+        <pre>
+@Configuration
+public class JdbcConfig {
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+}
+        </pre>
+    </div>
+
+    <!-- Student Controller -->
+    <div class="section">
+        <h2>StudentController.java</h2>
+        <pre>
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    @Autowired
+    private StudentService service;
+
+    @PostMapping("/add")
+    public String add(@RequestBody Student s) {
+        service.save(s);
+        return "Student added!";
+    }
+
+    @GetMapping("/get")
+    public List<Student> list() {
+        return service.listAll();
+    }
+
+    @GetMapping("/{id}")
+    public Student get(@PathVariable int id) {
+        return service.get(id);
+    }
+
+    @PutMapping("/update")
+    public String update(@RequestBody Student s) {
+        service.update(s);
+        return "Student updated!";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+        service.delete(id);
+        return "Student deleted!";
+    }
+}
+        </pre>
+    </div>
+
+    <!-- Student Model -->
+    <div class="section">
+        <h2>Student.java</h2>
+        <pre>
+public class Student {
+    private int id;
+    private String name;
+    private String email;
+
+    public Student() {}
+
+    public Student(int id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
+    // Getters and Setters
+}
+        </pre>
+    </div>
+
+    <!-- Repository -->
+    <div class="section">
+        <h2>StudentRepository.java</h2>
+        <pre>
+@Repository
+public class StudentRepository {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public int save(Student s) {
+        return jdbcTemplate.update(
+            "INSERT INTO student(name, email) VALUES (?, ?)",
+            s.getName(), s.getEmail());
+    }
+
+    public List<Student> listAll() {
+        return jdbcTemplate.query(
+            "SELECT * FROM student",
+            new BeanPropertyRowMapper<>(Student.class));
+    }
+
+    public Student getById(int id) {
+        return jdbcTemplate.queryForObject(
+            "SELECT * FROM student WHERE id = ?",
+            new BeanPropertyRowMapper<>(Student.class),
+            id);
+    }
+
+    public int update(Student s) {
+        return jdbcTemplate.update(
+            "UPDATE student SET name=?, email=? WHERE id=?",
+            s.getName(), s.getEmail(), s.getId());
+    }
+
+    public int delete(int id) {
+        return jdbcTemplate.update(
+            "DELETE FROM student WHERE id=?",
+            id);
+    }
+}
+        </pre>
+    </div>
+
+    <!-- Service -->
+    <div class="section">
+        <h2>StudentService.java</h2>
+        <pre>
+@Service
+public class StudentService {
+
+    @Autowired
+    private StudentRepository repo;
+
+    public int save(Student s) { return repo.save(s); }
+    public List<Student> listAll() { return repo.listAll(); }
+    public Student get(int id) { return repo.getById(id); }
+    public int update(Student s) { return repo.update(s); }
+    public int delete(int id) { return repo.delete(id); }
+}
+        </pre>
+    </div>
+
+    <!-- Output -->
+    <div class="section">
+        <h2>Output</h2>
+        <img src="../images/image101.png" alt="Week 10 Output 1">
+        <img src="../images/image102.png" alt="Week 10 Output 2">
+        <img src="../images/image103.png" alt="Week 10 Output 3">
+        <img src="../images/image104.png" alt="Week 10 Output 4">
+    </div>
+
+    <!-- Result -->
+    <div class="section">
+        <h2>Result</h2>
+        <p>
+            CRUD operations were executed successfully using Spring JDBC Template.
+            Spring stereotype annotations
+            <strong>@Component</strong>, <strong>@Service</strong>,
+            <strong>@Repository</strong>, and <strong>@Controller</strong>
+            were used, and MySQL database integration was achieved.
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

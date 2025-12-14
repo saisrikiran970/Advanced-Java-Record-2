@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 2 – Advanced Java Lab</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .week-content {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #1e88e5;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+
+        pre {
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #1e88e5;
+        }
+
+        img {
+            width: 100%;
+            max-width: 750px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="week-content">
+
+    <h1>Week – 2</h1>
+
+    <div class="meta">
+        <p><strong>Roll No:</strong> 238W1A1290</p>
+        <p><strong>Date:</strong> 28-07-2025</p>
+        <p><strong>Experiment:</strong> JAVA & MS-ACCESS CONNECTION (Without DSN)</p>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="section">
+        <h2>Step 1: Create Java Application</h2>
+        <p>
+            Create a new Java application file using any Java IDE such as
+            Eclipse or NetBeans.
+        </p>
+
+        <!-- Step 1 -->
+        <img src="../images/image1.png" alt="Step 1 - Create Java Application">
+    </div>
+
+    <!-- Step 2 (NO IMAGE) -->
+    <div class="section">
+        <h2>Step 2: Copy the Source Code</h2>
+        <p>
+            Copy the following Java program into the created Java application file.
+        </p>
+
+        <pre>
+package welcome;
+
+import java.sql.*;
+import java.util.*;
+
+public class Welcome {
+    public static void main(String args[]) {
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+
+            Connection con = DriverManager.getConnection(
+                "jdbc:ucanaccess://D:\\vrsec.accdb"
+            );
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from it");
+
+            while (rs.next()) {
+                System.out.println("Emp Number is: " + rs.getInt(1));
+                System.out.println("Emp Name is: " + rs.getString(2));
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+        </pre>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="section">
+        <h2>Step 3: Database Setup</h2>
+        <p>
+            Extract the given MS-Access database file and copy
+            <strong>vrsec.accdb</strong> to the <strong>D:</strong> drive.
+        </p>
+
+        <!-- Step 3 -->
+<img src="../images/image2.png" alt="Step 3 - Database Setup">
+    </div>
+
+    <!-- Step 4 -->
+    <div class="section">
+        <h2>Step 4: Add Required JAR File</h2>
+        <p>
+            Add the required <strong>UCanAccess JAR files</strong>
+            to the project build path.
+        </p>
+
+        <!-- Step 4 -->
+<img src="../images/image3.png" alt="Step 4 - Add JAR Files">
+    </div>
+
+    <!-- Step 5 -->
+    <div class="section">
+        <h2>Step 5: Execute the Program</h2>
+        <p>
+            Run the Java application. Output will be displayed
+            in the console.
+        </p>
+
+        <!-- Step 5 -->
+<img src="../images/image4.png" alt="Step 5 - Program Output">
+    </div>
+
+</div>
+
+</body>
+</html>

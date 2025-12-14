@@ -1,0 +1,670 @@
+/* ===== CSS Variables ===== */
+:root {
+    /* Primary palette */
+    --primary: #5f72ff;        /* Royal blue */
+    --primary-dark: #4a5ce0;
+    --primary-light: #8ea2ff;
+
+    /* Accent */
+    --secondary: #7c5cff;      /* Soft violet */
+    --accent: #ff7aa2;         /* Subtle pink */
+
+    /* Text colors */
+    --text-primary: #1f2937;   /* Slate-900 */
+    --text-secondary: #4b5563; /* Slate-600 */
+    --text-light: #9ca3af;     /* Slate-400 */
+
+    /* Backgrounds */
+    --bg-primary: #f8fafc;     /* Very light gray */
+    --bg-secondary: #ffffff;
+
+    /* Header gradient */
+    --bg-gradient: linear-gradient(
+        135deg,
+        #5f72ff 0%,
+        #7c5cff 50%,
+        #8a5cff 100%
+    );
+
+    /* Shadows */
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.10);
+    --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.15);
+
+    /* Radius */
+    --border-radius: 14px;
+    --border-radius-sm: 10px;
+
+    /* Motion */
+    --transition: all 0.3s ease;
+    --transition-fast: all 0.2s ease;
+}
+
+
+/* ===== Global Styles ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    height: 100vh; /* Make body take full viewport height */
+}
+
+.app-container {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent main container from scrolling */
+}
+
+/* ===== Header Styles ===== */
+.app-header {
+     background: linear-gradient(135deg, #5f72ff, #8a5cff);
+    color: white;
+    padding: 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== Profile Section Styles ===== */
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.profile-photo:hover {
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.profile-photo .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.app-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.5px;
+}
+
+.app-subtitle {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.header-decoration {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 30% 0);
+}
+
+/* ===== Main Layout ===== */
+.app-layout {
+    display: flex;
+    flex: 1;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 0; /* Important for flex children to scroll properly */
+    overflow: hidden; /* Prevent layout from scrolling */
+}
+
+/* ===== Weeks Panel ===== */
+.weeks-panel {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Full height of parent */
+    overflow: hidden; /* Prevent panel from scrolling */
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    height: 100%; /* Full height */
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.week-count {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    background: rgba(67, 97, 238, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.weeks-container {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto; /* Allow scrolling only in weeks list */
+    flex: 1; /* Take remaining space */
+    min-height: 0; /* Important for scrolling */
+}
+
+.week-card {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius-sm);
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    text-align: left;
+    font-weight: 500;
+    color: var(--text-primary);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent cards from shrinking */
+}
+
+.week-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.week-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+}
+
+.week-card:hover::before {
+    left: 100%;
+}
+
+.week-card.active {
+    background: linear-gradient(135deg, #5f72ff, #7c5cff);
+    color: white;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.week-card.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+}
+
+/* ===== Content Viewer ===== */
+.content-viewer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    height: 100%; /* Full height */
+    min-height: 0; /* Important for flex children */
+}
+
+.viewer-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+#week-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.viewer-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, #5f72ff, #7c5cff);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
+}
+
+.download-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+}
+
+.download-btn svg {
+    transition: var(--transition-fast);
+}
+
+.download-btn:hover svg {
+    transform: translateY(1px);
+}
+
+.frame-container {
+    flex: 1; /* Take remaining space */
+    padding: 0;
+    background: linear-gradient(135deg, #f9fafb, #eef2ff);
+    position: relative;
+    overflow: hidden; /* Prevent container from scrolling */
+    min-height: 0; /* Important for flex children */
+}
+
+#frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+    transform: scale(0.8); /* Scale down the content to 80% */
+    transform-origin: top left; /* Scale from top-left corner */
+    width: 125%; /* Compensate for scaling (100% / 0.8 = 125%) */
+    height: 125%; /* Compensate for scaling */
+    overflow: hidden; /* Hide scrollbars */
+}
+
+/* Alternative: Use zoom property (might not work in all browsers) */
+/* #frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+    zoom: 0.8;
+    -moz-transform: scale(0.8);
+    -moz-transform-origin: 0 0;
+    -o-transform: scale(0.8);
+    -o-transform-origin: 0 0;
+    -webkit-transform: scale(0.8);
+    -webkit-transform-origin: 0 0;
+} */
+
+/* ===== Footer ===== */
+.app-footer {
+    text-align: center;
+    padding: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    background: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    flex-shrink: 0; /* Prevent footer from shrinking */
+}
+
+/* ===== Animation Classes ===== */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.4s ease-out;
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+    .app-layout {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .weeks-panel {
+        flex: 0 0 auto;
+        height: auto;
+        max-height: 200px;
+    }
+    
+    .glass-panel {
+        height: auto;
+    }
+    
+    .weeks-container {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        overflow-y: hidden; /* Horizontal scrolling on mobile */
+    }
+    
+    .week-card {
+        min-width: 140px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: 1.25rem 1.5rem;
+    }
+    
+    .profile-section {
+        gap: 1rem;
+    }
+    
+    .profile-photo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .app-title {
+        font-size: 1.5rem;
+    }
+    
+    .app-layout {
+        padding: 1rem;
+    }
+    
+    .viewer-header {
+        padding: 1.25rem 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    #week-title {
+        font-size: 1.25rem;
+    }
+    
+    .panel-header {
+        padding: 1rem 1.25rem;
+    }
+    
+    .weeks-container {
+        padding: 0.75rem;
+    }
+    
+    /* Adjust scaling for mobile */
+    #frame {
+        transform: scale(0.7);
+        width: 142.86%; /* 100% / 0.7 */
+        height: 142.86%;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header {
+        padding: 1rem 1.25rem;
+    }
+    
+    .profile-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .profile-photo {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .app-title {
+        font-size: 1.3rem;
+    }
+    
+    .app-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .week-card {
+        min-width: 120px;
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .download-btn {
+        padding: 0.625rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Further adjust scaling for very small screens */
+    #frame {
+        transform: scale(0.6);
+        width: 166.67%; /* 100% / 0.6 */
+        height: 166.67%;
+    }
+}
+
+/* ===== Loading State ===== */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* ===== Default Photo Fallback ===== */
+.profile-photo .photo {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* ===== Custom Scrollbar ===== */
+.weeks-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.weeks-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.weeks-container::-webkit-scrollbar-thumb {
+    background: rgba(67, 97, 238, 0.3);
+    border-radius: 3px;
+}
+
+.weeks-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(67, 97, 238, 0.5);
+}
+
+/* ============================= */
+/* 🎨 AESTHETIC UI ENHANCEMENTS  */
+/* ============================= */
+
+/* App background refinement */
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* Header – more premium */
+.app-header {
+    background: linear-gradient(135deg, #5f72ff, #8a5cff);
+    border-bottom-left-radius: 28px;
+    border-bottom-right-radius: 28px;
+}
+
+/* Header text */
+.app-title {
+    font-size: 2rem;
+    letter-spacing: -0.6px;
+}
+
+.app-subtitle {
+    opacity: 0.85;
+}
+
+/* Profile photo polish */
+.profile-photo {
+    border: 4px solid rgba(255,255,255,0.45);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+/* Glass panel upgrade */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* Panel header */
+.panel-header {
+    background: rgba(255,255,255,0.6);
+    font-weight: 600;
+}
+
+/* Week cards – modern look */
+.week-card {
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #ffffff, #f3f4ff);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.week-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(0,0,0,0.12);
+}
+
+/* Active week */
+.week-card.active {
+    background: linear-gradient(135deg, #5f72ff, #8a5cff);
+    box-shadow: 0 18px 40px rgba(95,114,255,0.45);
+}
+
+/* Content viewer */
+.content-viewer {
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* Viewer header */
+.viewer-header {
+    background: linear-gradient(to right, #ffffff, #f2f4ff);
+}
+
+/* Week title */
+#week-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+/* Download button – pill style */
+.download-btn {
+    border-radius: 999px;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #5f72ff, #8a5cff);
+    box-shadow: 0 10px 25px rgba(95,114,255,0.4);
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 35px rgba(95,114,255,0.55);
+}
+
+/* Frame container */
+.frame-container {
+    background: linear-gradient(135deg, #f9fafb, #eef2ff);
+}
+
+/* Footer minimal */
+.app-footer {
+    background: transparent;
+    color: #9ca3af;
+}
+
+/* Scrollbar polish */
+.weeks-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #5f72ff, #8a5cff);
+}

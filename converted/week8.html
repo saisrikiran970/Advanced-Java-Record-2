@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 8 – Advanced Java Lab</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .week-content {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #1e88e5;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #444;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+
+        pre {
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #1e88e5;
+        }
+
+        img {
+            width: 100%;
+            max-width: 750px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="week-content">
+
+    <h1>Week – 8</h1>
+
+    <div class="meta">
+        <p><strong>Roll No:</strong> 238W1A1290</p>
+        <p><strong>Topic:</strong> Spring Boot Lab Programs</p>
+    </div>
+
+    <!-- ================= EXPERIMENT 1 ================= -->
+    <div class="section">
+        <h2>Experiment – 1: Hello World using Spring Boot</h2>
+        <p><strong>AIM:</strong> To create a simple “Hello World” web application using Spring Boot.</p>
+
+        <pre>
+@SpringBootApplication
+@RestController
+public class DemoApplication {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello World! Welcome to Spring Boot.";
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+        </pre>
+
+        <h3>Output</h3>
+        <img src="../images/image81.png" alt="Experiment 1 Output">
+    </div>
+
+    <!-- ================= EXPERIMENT 2 ================= -->
+    <div class="section">
+        <h2>Experiment – 2: @RequestParam and @PathVariable</h2>
+        <p><strong>AIM:</strong> To pass parameters dynamically through URL and query.</p>
+
+        <pre>
+@RestController
+@RequestMapping("/api")
+public class WelcomeController {
+
+    @GetMapping("/welcome")
+    public String welcome(@RequestParam String name) {
+        return "Welcome " + name + "!";
+    }
+
+    @GetMapping("/square/{num}")
+    public String square(@PathVariable int num) {
+        return "Square of " + num + " = " + (num * num);
+    }
+}
+        </pre>
+
+        <h3>Output</h3>
+        <img src="../images/image82.png" alt="Experiment 2 Output 1">
+        <img src="../images/image83.png" alt="Experiment 2 Output 2">
+    </div>
+
+    <!-- ================= EXPERIMENT 3 ================= -->
+    <div class="section">
+        <h2>Experiment – 3: Controller, Service & Autowiring</h2>
+        <p><strong>AIM:</strong> To implement service layer using @Service and @Autowired.</p>
+
+        <pre>
+@Service
+public class MathService {
+    public int add(int a, int b) {
+        return a + b;
+    }
+}
+
+@RestController
+@RequestMapping("/math")
+public class MathController {
+
+    @Autowired
+    private MathService service;
+
+    @GetMapping("/add")
+    public String add(@RequestParam int x, @RequestParam int y) {
+        return "Sum = " + service.add(x, y);
+    }
+}
+        </pre>
+
+        <h3>Output</h3>
+        <img src="../images/image84.png" alt="Experiment 3 Output">
+    </div>
+
+    <!-- ================= EXPERIMENT 4 ================= -->
+    <div class="section">
+        <h2>Experiment – 4: CRUD using Spring Boot & MySQL</h2>
+        <p><strong>AIM:</strong> To create REST APIs for Create, Read, Update, and Delete operations.</p>
+
+        <pre>
+@Entity
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
+    private String dept;
+}
+        </pre>
+
+        <pre>
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    @Autowired
+    private StudentRepository repo;
+
+    @PostMapping("/")
+    public Student addStudent(@RequestBody Student s) {
+        return repo.save(s);
+    }
+
+    @GetMapping("/")
+    public List<Student> getAll() {
+        return repo.findAll();
+    }
+
+    @PutMapping("/{id}")
+    public Student update(@PathVariable int id, @RequestBody Student s) {
+        s.setId(id);
+        return repo.save(s);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        repo.deleteById(id);
+    }
+}
+        </pre>
+
+        <h3>Output</h3>
+        <img src="../images/image85.png" alt="Experiment 4 Output 1">
+        <img src="../images/image86.png" alt="Experiment 4 Output 2">
+        <img src="../images/image87.png" alt="Experiment 4 Output 3">
+        <img src="../images/image88.png" alt="Experiment 4 Output 4">
+    </div>
+
+    <div class="section">
+        <h2>Result</h2>
+        <p>All Spring Boot experiments were executed successfully.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

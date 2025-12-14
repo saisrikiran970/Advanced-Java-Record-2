@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Java Lab Record – 238W1A1290</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="profile-section">
+                    <div class="profile-photo">
+                        <img src="images/student-photo.jpg" alt="Student Photo" class="photo">
+                    </div>
+                    <div class="profile-info">
+                        <h1 class="app-title">Advanced Java Lab Record</h1>
+                        <h2 class="app-subtitle">Roll No: 238W1A1290</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="header-decoration"></div>
+        </header>
+
+        <main class="app-layout">
+            <section class="weeks-panel glass-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Weeks</h3>
+                    <div class="week-count">12 Weeks</div>
+                </div>
+                <div class="weeks-container">
+                    <!-- Week cards will be injected here by script.js -->
+                </div>
+            </section>
+
+            <section class="content-viewer">
+                <div class="viewer-header">
+                    <h2 id="week-title">Select a Week from the Left</h2>
+                    <div class="viewer-actions">
+                        <a id="downloadLink" class="download-btn" href="#" download style="display: none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 15V16.2C21 17.8802 21 18.7202 20.673 19.362C20.3854 19.9265 19.9265 20.3854 19.362 20.673C18.7202 21 17.8802 21 16.2 21H7.8C6.11984 21 5.27976 21 4.63803 20.673C4.07354 20.3854 3.6146 19.9265 3.32698 19.362C3 18.7202 3 17.8802 3 16.2V15M17 10L12 15M12 15L7 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Download Original Record
+                        </a>
+                    </div>
+                </div>
+                <div class="frame-container">
+                    <iframe id="frame" title="Week Content"></iframe>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>Advanced Java Lab – Interactive Record Viewer</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

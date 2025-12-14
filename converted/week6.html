@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 6 – Advanced Java Lab</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .week-content {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #1e88e5;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 25px;
+            color: #444;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+
+        pre {
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 5px solid #1e88e5;
+        }
+
+        img {
+            width: 100%;
+            max-width: 750px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="week-content">
+
+    <h1>Week – 6</h1>
+
+    <div class="meta">
+        <p><strong>Roll No:</strong> 238W1A1290</p>
+        <p><strong>Date:</strong> 06-10-2025</p>
+        <p><strong>Topic:</strong> Cookies and Sessions</p>
+    </div>
+
+    <!-- ================= COOKIES ================= -->
+    <div class="section">
+        <h2>Cookies</h2>
+
+        <h3>HTML Code</h3>
+        <pre>
+&lt;form action="Cookie1" method="post"&gt;
+    Username: &lt;input type="text" name="username"&gt;&lt;br&gt;
+    Password: &lt;input type="password" name="password"&gt;&lt;br&gt;
+    &lt;input type="submit" value="Login"&gt;
+&lt;/form&gt;
+        </pre>
+
+        <h3>Cookie Servlet-1</h3>
+        <pre>
+@WebServlet("/Cookie1")
+public class Cookie1 extends HttpServlet {
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws IOException {
+
+        String name = request.getParameter("username");
+        Cookie ck = new Cookie("uname", name);
+        response.addCookie(ck);
+
+        PrintWriter out = response.getWriter();
+        out.println("&lt;h2&gt;Welcome " + name + "&lt;/h2&gt;");
+        out.println("&lt;form action='Cookie2' method='post'&gt;");
+        out.println("&lt;input type='submit' value='Go'&gt;");
+        out.println("&lt;/form&gt;");
+    }
+}
+        </pre>
+
+        <h3>Cookie Servlet-2</h3>
+        <pre>
+@WebServlet("/Cookie2")
+public class Cookie2 extends HttpServlet {
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws IOException {
+
+        Cookie ck[] = request.getCookies();
+        PrintWriter out = response.getWriter();
+        out.println("Hello " + ck[0].getValue());
+    }
+}
+        </pre>
+
+        <h3>Output (Cookies)</h3>
+        <img src="../images/image61.png" alt="Cookies Output 1">
+        <img src="../images/image62.png" alt="Cookies Output 2">
+        <img src="../images/image63.png" alt="Cookies Output 3">
+    </div>
+
+    <!-- ================= SESSIONS ================= -->
+    <div class="section">
+        <h2>Sessions</h2>
+
+        <h3>HTML Code</h3>
+        <pre>
+&lt;form action="LoginServlet" method="post"&gt;
+    Username: &lt;input type="text" name="username"&gt;&lt;br&gt;
+    Password: &lt;input type="password" name="password"&gt;&lt;br&gt;
+    &lt;input type="submit" value="Login"&gt;
+&lt;/form&gt;
+        </pre>
+
+        <h3>LoginServlet</h3>
+        <pre>
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws IOException {
+
+        HttpSession session = request.getSession();
+        session.setAttribute("username",
+                request.getParameter("username"));
+
+        PrintWriter out = response.getWriter();
+        out.println("&lt;h2&gt;Login Successful&lt;/h2&gt;");
+        out.println("&lt;a href='WelcomeServlet'&gt;Next&lt;/a&gt;");
+    }
+}
+        </pre>
+
+        <h3>WelcomeServlet</h3>
+        <pre>
+@WebServlet("/WelcomeServlet")
+public class WelcomeServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws IOException {
+
+        HttpSession session = request.getSession(false);
+        PrintWriter out = response.getWriter();
+
+        if(session != null)
+            out.println("Welcome " +
+                session.getAttribute("username"));
+        else
+            out.println("Session expired");
+    }
+}
+        </pre>
+
+        <h3>Output (Sessions)</h3>
+        <img src="../images/image64.png" alt="Session Output 1">
+        <img src="../images/image65.png" alt="Session Output 2">
+        <img src="../images/image66.png" alt="Session Output 3">
+    </div>
+
+</div>
+
+</body>
+</html>
